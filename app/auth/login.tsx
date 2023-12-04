@@ -2,11 +2,19 @@ import { View, SafeAreaView, StyleSheet, Image } from "react-native";
 import React from "react";
 import { useRouter, Link } from "expo-router";
 import { TextInput, Button, Text } from "react-native-paper";
-const myImage = require("../assets/farm-logo.jpg");
+import { useAuth } from "../context/AuthContext";
+const myImage = require("../../assets/images/farm-logo.jpg");
 
 const Page = () => {
+  const { onLogin } = useAuth();
   const router = useRouter();
-  const [text, setText] = React.useState("");
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const login = () => {
+    // alert("Login first");
+    onLogin?.(username, password);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white", padding: 5 }}>
@@ -37,20 +45,25 @@ const Page = () => {
         right={<TextInput.Affix text="/100" />}
         style={{ marginBottom: 15, backgroundColor: "white" }}
         theme={{ colors: { primary: "#4d8b31" } }}
+        value={username}
+        onChangeText={setUsername}
       />
       <TextInput
         mode="outlined"
         label="Password"
+        secureTextEntry={true}
         placeholder="Type something"
         right={<TextInput.Affix text="/100" />}
         style={{ marginBottom: 25, backgroundColor: "white" }}
         theme={{ colors: { primary: "#4d8b31" } }}
+        value={password}
+        onChangeText={setPassword}
       />
 
       <Button
         // icon="send"
         mode="contained"
-        onPress={() => router.push("/(tabs)/one")}
+        onPress={login}
         style={{ marginBottom: 15, backgroundColor: "#4d8b31" }}
       >
         Login
@@ -62,7 +75,7 @@ const Page = () => {
           marginTop: 35,
         }}
       >
-        <Link href={"/register"} asChild>
+        <Link href={"./register"} asChild>
           <Text variant="bodyMedium">
             If you dont have an account{" "}
             <Text style={{ color: "#4d8b31", fontWeight: "bold" }}>

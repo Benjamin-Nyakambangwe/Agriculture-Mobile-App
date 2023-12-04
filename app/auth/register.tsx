@@ -2,7 +2,7 @@ import { View, SafeAreaView, StyleSheet, Image } from "react-native";
 import React from "react";
 import { useRouter, Link } from "expo-router";
 import { TextInput, Button, Text } from "react-native-paper";
-const myImage = require("../assets/farm-logo.jpg");
+const myImage = require("../../assets/images/farm-logo.jpg");
 
 const Page = () => {
   const router = useRouter();
@@ -67,7 +67,7 @@ const Page = () => {
       <Button
         // icon="send"
         mode="contained"
-        onPress={() => router.push("/(tabs)/one")}
+        onPress={() => router.push("/(tabs)")}
         style={{ marginBottom: 8, backgroundColor: "#4d8b31" }}
       >
         Register
@@ -79,7 +79,7 @@ const Page = () => {
           marginTop: 25,
         }}
       >
-        <Link href={"/"} asChild>
+        <Link href={"./login"} asChild>
           <Text variant="bodyMedium">
             If you already have an account{" "}
             <Text style={{ color: "#4d8b31", fontWeight: "bold" }}>log in</Text>{" "}

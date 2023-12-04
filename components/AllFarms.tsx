@@ -1,5 +1,5 @@
 import React from "react";
-import { View, FlatList, StyleSheet, Image } from "react-native";
+import { View, FlatList, StyleSheet, Image, Dimensions } from "react-native";
 import { Avatar, Card, Text } from "react-native-paper";
 
 type FarmItem = {
@@ -15,11 +15,15 @@ type FarmItem = {
 
 const myImage = require("../assets/images/farm-logo.jpg");
 
+type Props = {
+  data: FarmItem[];
+};
+
 const LeftContent = (props: any) => <Avatar.Icon {...props} icon="folder" />;
 
-const cardWidth = 250;
+const cardWidth = Dimensions.get("window").width;
 
-const TopFarms = ({ data }: { data: FarmItem[] }) => {
+const TopFarms: React.FC<Props> = ({ data }) => {
   const renderItem = ({ item }: { item: FarmItem }) => (
     <Card style={styles.card}>
       <Card.Cover source={{ uri: `http://10.0.2.2:8000${item.cover}` }} />
@@ -53,13 +57,10 @@ const TopFarms = ({ data }: { data: FarmItem[] }) => {
   );
 
   return (
-    <View style={{ marginTop: 15 }}>
+    <View style={{ marginTop: 15, marginBottom: 60 }}>
       <FlatList
         data={data}
         renderItem={renderItem}
-        // keyExtractor={(item) => item.id.toString()}
-        horizontal
-        snapToInterval={cardWidth + 12}
         contentContainerStyle={{ paddingHorizontal: 12 }}
         initialNumToRender={1.25}
       />
@@ -70,14 +71,15 @@ const TopFarms = ({ data }: { data: FarmItem[] }) => {
 const styles = StyleSheet.create({
   card: {
     width: cardWidth,
-    marginRight: 12,
-    height: 150,
+    marginLeft: -12,
+    height: 100,
+    marginBottom: 115,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
-    height: "40%",
-    top: 90,
+    height: "60%",
+    top: 140,
   },
   cardContent: {
     position: "absolute",

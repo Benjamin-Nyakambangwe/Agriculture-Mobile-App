@@ -1,51 +1,63 @@
-import { View, FlatList, StyleSheet, Image } from "react-native";
 import React from "react";
+import { View, FlatList, StyleSheet, Image } from "react-native";
 import { Avatar, Card, Text } from "react-native-paper";
-const myImage = require("../assets/farm-logo.jpg");
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
 
-type Item = {
+// Replace this with your actual data type
+type FarmItem = {
   id: number;
+  name: string;
+  image: string;
+  farm: {
+    name: string;
+    logo: string;
+  };
 };
+
+const myImage = require("../assets/images/farm-logo.jpg");
 
 const LeftContent = (props: any) => <Avatar.Icon {...props} icon="folder" />;
 
-const data: Item[] = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+const cardWidth = 250;
 
-const cardWidth = 250; // Adjust the card width based on your requirements
+const TopFarms = ({ data }: { data: FarmItem[] }) => {
+  const router = useRouter();
 
-const TopFarms = () => {
-  const renderItem = ({ item }: { item: Item }) => (
-    <Card style={styles.card}>
-      <Card.Cover source={{ uri: "https://picsum.photos/id/19/2500/1667" }} />
+  const renderItem = ({ item }: { item: FarmItem }) => (
+    <TouchableOpacity
+      onPress={() => router.push(`/produce-details/${item.id}`)}
+    >
+      <Card style={styles.card}>
+        <Card.Cover source={{ uri: `http://10.0.2.2:8000${item.image}` }} />
 
-      <Card.Content style={styles.cardContent}>
-        <View style={styles.innerContainer}>
-          <View style={styles.leftContent}>
-            {/* <LeftContent />
-             */}
-            <Image
-              source={myImage}
-              // style={styles.paginationImage}
-              resizeMode="cover"
-              style={{
-                width: 45,
-                height: 45,
-                borderRadius: 50,
-                marginLeft: -15,
-              }}
-            />
+        <Card.Content style={styles.cardContent}>
+          <View style={styles.innerContainer}>
+            <View style={styles.leftContent}>
+              {/* <LeftContent /> */}
+              <Image
+                source={{ uri: `http://10.0.2.2:8000${item.farm.logo}` }}
+                resizeMode="cover"
+                style={{
+                  width: 45,
+                  height: 45,
+                  borderRadius: 50,
+                  marginLeft: -15,
+                }}
+              />
+            </View>
+            <View style={styles.rightContent}>
+              <Text variant="titleMedium" style={{ color: "white" }}>
+                {item.name}
+              </Text>
+              <Text variant="titleSmall" style={{ color: "white" }}>
+                {item.farm.name}
+              </Text>
+            </View>
           </View>
-          <View style={styles.rightContent}>
-            <Text variant="titleSmall" style={{ color: "white" }}>
-              Tinashe Makoni
-            </Text>
-            <Text variant="titleMedium" style={{ color: "white" }}>
-              Cold Grange Farm
-            </Text>
-          </View>
-        </View>
-      </Card.Content>
-    </Card>
+        </Card.Content>
+      </Card>
+    </TouchableOpacity>
   );
 
   return (
@@ -54,10 +66,10 @@ const TopFarms = () => {
         data={data}
         renderItem={renderItem}
         // keyExtractor={(item) => item.id.toString()}
-        // horizontal
-        snapToInterval={cardWidth + 12} // Snap to one and a half cards (including gap)
+        snapToInterval={cardWidth + 12}
         contentContainerStyle={{ paddingHorizontal: 12 }}
         initialNumToRender={1.25}
+        // horizontal // Add this line if you want the FlatList to be horizontal
       />
     </View>
   );
@@ -69,12 +81,6 @@ const styles = StyleSheet.create({
     marginBottom: 120,
     height: 100,
   },
-  //   overlay: {
-  //     ...StyleSheet.absoluteFillObject,
-  //     backgroundColor: "rgba(0, 0, 0, 0.7)", // Change the opacity here (0.5 means 50% opacity)
-  //     height: "40%",
-  //     top: 90,
-  //   },
   cardContent: {
     position: "absolute",
     top: 0,
@@ -85,22 +91,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
   innerContainer: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 12,
     justifyContent: "space-between",
-    height: "100%", // Ensure the inner container takes the full height
+    height: "100%",
   },
-
   leftContent: {
-    marginRight: 2, // Adjust the spacing between left content and right content
+    marginRight: 2,
     flex: 1,
   },
-
   rightContent: {
-    flex: 3, // Allow the right content to take available space
+    flex: 3,
     color: "white",
   },
 });

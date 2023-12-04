@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Page = () => {
+const AddProduce = () => {
   return (
     <View>
-      <Text>Add Produce</Text>
+      <Text>AddProduce</Text>
     </View>
   );
 };
 
-export default Page;
+export default AddProduce;
